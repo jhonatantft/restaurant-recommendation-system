@@ -1,5 +1,6 @@
 # Boilerplate multistaging(dev-prod) with docker :whale: ReactJS :beginner:, ExpressJS :sparkler: and mongoDB :leaves:
 
+![node-current (tag)](https://img.shields.io/node/v/@jhonatantft/restaurant-recommendation-system/express-app)
 
 
 Scaffolding app to create a project with ReactJS, expressJS and Mongodb as persistence. 
