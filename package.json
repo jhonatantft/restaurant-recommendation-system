@@ -1,0 +1,12 @@
+{
+  "name": "restaurant-recommendation-system",
+  "version": "0.0.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jhonatantft/restaurant-recommendation-system.git"
+  },
+  "engines": {
+    "node": ">=8.17.4"
+  }
+}
