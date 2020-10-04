@@ -1,5 +1,4 @@
-const fs = require('fs')
-const data = require('../data/db')
+// const data = require('../data/db')
 const similarityMatrix = require('./similarityInferenceMatrix')
 const variablesWeight = require('./variablesWeight')
 
@@ -88,7 +87,7 @@ function buildSimilaritires (parsedData, preferences) {
  * local similarity based on previous cases
  * @param { Object } preferences - user preferences
  */
-function caseBaseReasoning (preferences) {
+function caseBaseReasoning (preferences, data) {
   const parsedData = parseData(data)
   const similarities = buildSimilaritires(parsedData, preferences)
   const userFinalSimilaritiesSum = similarities
@@ -112,6 +111,5 @@ function caseBaseReasoning (preferences) {
 }
 
 module.exports = {
-  getDataBase: data,
   getSimilars: caseBaseReasoning
 }
