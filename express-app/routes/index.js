@@ -5,8 +5,8 @@ const similarityInferenceController = require('../controller/inference.js')
 
 const MongoClient = require('mongodb').MongoClient
 const dbUser = process.env.DB_USER
-const dbPassord = process.env.DB_PASSWORD
-const connectionString = `mongodb+srv://${dbUser}:${dbPassord}@cluster0.ru7nr.mongodb.net/<dbname>?retryWrites=true&w=majority`
+const dbPassword = process.env.DB_PASSWORD
+const connectionString = `mongodb+srv://${dbUser}:${dbPassword}@cluster0.ru7nr.mongodb.net/<dbname>?retryWrites=true&w=majority`
 
  // Mock user
  const mockUserPreferences = {
