@@ -8,5 +8,12 @@
   },
   "engines": {
     "node": ">=8.17.4"
+  },
+  "scripts": {
+    "server": "node ./express-app/bin/www"
+  },
+  "dependencies": {
+    "express-app": "file:express-app",
+    "react-app": "file:react-app"
   }
 }
