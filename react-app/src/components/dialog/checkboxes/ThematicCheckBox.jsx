@@ -1,57 +1,62 @@
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import clsx from "clsx";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import { ThemeProvider } from "@material-ui/styles";
-import List from "@material-ui/core/List";
 import React from "react";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import { makeStyles } from "@material-ui/core/styles";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import { Box, Typography, Checkbox, FormControlLabel } from "@material-ui/core";
 
-const useStyles = makeStyles(({
-  font: {
-    fontFamily: 'Arial',
-    color: '#7e7e7e',
+const useStyles = makeStyles({
+  container: {
+    marginTop: 20,
+    paddingTop: 16,
+    borderTop: '2px solid #2d3a2d',
   },
-  margin: {
-    marginBottom: '-3px'
+  sectionTitle: {
+    fontFamily: 'Georgia, serif',
+    fontSize: '0.85rem',
+    fontWeight: 700,
+    color: '#2d3a2d',
+    marginBottom: 12,
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
   },
-}));
+  checkboxLabel: {
+    '& .MuiTypography-root': {
+      fontSize: '0.9rem',
+      color: '#5a6b5a',
+    },
+  },
+});
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     secondary: {
-      main: '#d50000',
-    }
-  }
-})
+      main: '#2d3a2d',
+    },
+  },
+});
 
 const ThematicCheckBox = ({ handleChange }) => {
-  let styles = useStyles();
+  const styles = useStyles();
+
   return (
-    <List>
-      <Divider />
-      <ListItem>
-        <h3 className={clsx(styles.font, styles.margin)}>Ambiente</h3>
-      </ListItem>
-      <ListItem>
-        <FormControl>
-          <FormGroup>
-            <ThemeProvider theme={theme}>
-              <FormControlLabel
-                control={<Checkbox onChange={handleChange}
-                  name="thematic" />}
-                label="Temático"
-              />
-            </ThemeProvider>
-          </FormGroup>
-        </FormControl>
-      </ListItem>
-    </List>
-  )
+    <Box className={styles.container}>
+      <Typography className={styles.sectionTitle}>
+        Ambiance
+      </Typography>
+      <ThemeProvider theme={theme}>
+        <FormControlLabel
+          className={styles.checkboxLabel}
+          control={
+            <Checkbox
+              onChange={handleChange}
+              name="thematic"
+              color="secondary"
+            />
+          }
+          label="Themed Restaurant"
+        />
+      </ThemeProvider>
+    </Box>
+  );
 };
 
 export default ThematicCheckBox;

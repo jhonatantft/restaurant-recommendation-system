@@ -22,7 +22,7 @@ services:
       - "3001:80"
 
   mongodb:
-      image: mongo:3.6.3-jessie
+      image: mongo:6.0
       environment:
         - MONGO_INITDB_DATABASE=prod
         - MONGO_INITDB_ROOT_USERNAME=prod

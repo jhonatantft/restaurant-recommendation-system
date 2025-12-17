@@ -3,32 +3,49 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(({
-  divStyle: {
-    width: 300
+const useStyles = makeStyles({
+  root: {
+    width: '100%',
   },
-}));
+  textField: {
+    '& .MuiOutlinedInput-root': {
+      borderRadius: 10,
+      background: '#ffffff',
+    },
+  },
+});
 
 const SearchInput = ({ options, searchInputSave }) => {
   const handleChangeSearchInput = (event, newValue) => {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     searchInputSave(newValue);
   };
 
-  let styles = useStyles();
+  const styles = useStyles();
+
   return (
-    <div className={styles.divStyle}>
+    <div className={styles.root}>
       <Autocomplete
         id="culinaryTypeOptions"
         freeSolo
         onChange={handleChangeSearchInput}
         options={options.map((option) => option)}
         renderInput={(params) => (
-          <TextField {...params} color={"secondary"}
-            label="Digite um tipo de cozinha" margin="dense" variant="outlined" />
+          <TextField
+            {...params}
+            color="secondary"
+            placeholder="Select or type a cuisine"
+            margin="dense"
+            variant="outlined"
+            size="small"
+            className={styles.textField}
+          />
         )}
       />
     </div>
-  )
+  );
 };
+
 export default SearchInput;

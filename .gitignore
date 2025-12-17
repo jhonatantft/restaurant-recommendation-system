@@ -41,3 +41,5 @@ coverage
 npm-debug.log
 
 .idea
+
+CLAUDE.md

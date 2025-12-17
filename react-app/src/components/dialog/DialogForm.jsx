@@ -6,59 +6,147 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from '@material-ui/core/Dialog';
 import { makeStyles } from "@material-ui/core/styles";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import List from "@material-ui/core/List";
-import Paper from "@material-ui/core/Paper";
+import { Box } from "@material-ui/core";
 import ThematicCheckBox from "./checkboxes/ThematicCheckBox";
 import RestrictionAlimentCheckBox from "./checkboxes/RestrictionAlimentCheckBox";
 import PriceTextField from "./textfield/PriceTextField";
 import RatingField from "./others/RatingField";
 import SearchInputField from "./others/SearchInputField";
+import { FiArrowRight } from "react-icons/fi";
 
-const useStyles = makeStyles(({
-  buttonColorRed: {
-    color: '#d50000'
+const useStyles = makeStyles({
+  buttonDark: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#2d3a2d',
+    color: '#fff',
+    fontWeight: 600,
+    fontSize: '0.85rem',
+    padding: '10px 20px',
+    borderRadius: 20,
+    border: '2px solid #2d3a2d',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: '#1a2634',
+      borderColor: '#1a2634',
+    },
   },
-  buttonColorWhite: {
-    color: '#ffffff'
+  buttonWhite: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#e8d44d',
+    color: '#2d3a2d',
+    fontWeight: 600,
+    fontSize: '0.85rem',
+    padding: '12px 24px',
+    borderRadius: 20,
+    border: '2px solid #2d3a2d',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: '#d4c043',
+    },
   },
-
-  paper: {
-    width: '75%',
-    height: "auto"
+  arrowIcon: {
+    fontSize: 16,
   },
   dialog: {
-    justifyContent: 'center',
-    display: 'flex'
+    '& .MuiDialog-paper': {
+      borderRadius: 24,
+      maxWidth: 480,
+      backgroundColor: '#f5f2e8',
+      border: '2px solid #2d3a2d',
+    },
   },
-}));
+  dialogTitle: {
+    textAlign: 'center',
+    padding: '32px 32px 16px',
+    '& .MuiTypography-root': {
+      fontFamily: 'Georgia, serif',
+      fontWeight: 700,
+      fontSize: '1.5rem',
+      color: '#2d3a2d',
+      textTransform: 'uppercase',
+      letterSpacing: '1px',
+    },
+  },
+  dialogContent: {
+    padding: '0 32px 16px',
+  },
+  dialogDescription: {
+    textAlign: 'center',
+    color: '#5a6b5a',
+    fontSize: '0.9rem',
+    marginBottom: 24,
+    lineHeight: 1.5,
+  },
+  formContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    border: '2px solid #2d3a2d',
+  },
+  dialogActions: {
+    padding: '16px 32px 32px',
+    justifyContent: 'center',
+    gap: 12,
+  },
+  cancelButton: {
+    color: '#2d3a2d',
+    fontWeight: 500,
+    padding: '10px 24px',
+    borderRadius: 20,
+    textTransform: 'none',
+    border: '2px solid #2d3a2d',
+    '&:hover': {
+      backgroundColor: 'rgba(0,0,0,0.04)',
+    },
+  },
+  searchButton: {
+    backgroundColor: '#e8d44d',
+    color: '#2d3a2d',
+    fontWeight: 600,
+    padding: '12px 32px',
+    borderRadius: 20,
+    textTransform: 'none',
+    border: '2px solid #2d3a2d',
+    '&:hover': {
+      backgroundColor: '#d4c043',
+    },
+  },
+});
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     secondary: {
-      main: '#d50000',
-    }
-  }
-})
+      main: '#2d3a2d',
+    },
+  },
+});
 
-let data = []
+let data = [];
 
-// Retrieve cuisine types
 fetch('http://localhost:3000/')
   .then(res => res.json())
   .then((result) => {
-      data = result.map(restaurant => restaurant.cuisineType)
-    })
+    data = result.map(restaurant => restaurant.cuisineType);
+  });
 
-const DialogForm = ({ hasToBeWhite, alternText, setHiddenAbout }) => {
-  let styles = useStyles();
+const DialogForm = ({ hasToBeWhite, alternText, onSearchResults }) => {
+  const styles = useStyles();
 
-  let options = [...new Set(data)];
+  const options = [...new Set(data)];
 
   const [price, setPrice] = React.useState("");
   const handlePrice = (event) => {
-    setPrice(event.target.value)
+    setPrice(event.target.value);
   };
 
   const [open, setOpen] = React.useState(false);
@@ -66,112 +154,113 @@ const DialogForm = ({ hasToBeWhite, alternText, setHiddenAbout }) => {
     setOpen(true);
   };
   const handleClose = () => {
-    setOpen(!open);
-    setState(false)
-  };
-
-  const [ratingChange, setRatingChange] = React.useState(0);
-  const handleRatingChange = (event) => {
-    setRatingChange(event.target.value)
-  };
-
-  const [searchInput, setSearchInput] = React.useState("");
-  const HandleSearchInputSave = (value) => {
-    setSearchInput(value);
-  };
-
-  const [state, setState] = React.useState(
-    {
+    setOpen(false);
+    setState({
       glutenFree: false,
       sugarFree: false,
       lactoseFree: false,
       soyFree: false,
       thematic: false,
-    }
-  );
+    });
+  };
+
+  const [ratingChange, setRatingChange] = React.useState(0);
+  const handleRatingChange = (event) => {
+    setRatingChange(event.target.value);
+  };
+
+  const [searchInput, setSearchInput] = React.useState("");
+  const handleSearchInputSave = (value) => {
+    setSearchInput(value);
+  };
+
+  const [state, setState] = React.useState({
+    glutenFree: false,
+    sugarFree: false,
+    lactoseFree: false,
+    soyFree: false,
+    thematic: false,
+  });
+
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
-  const HandleOnSearchButton = () => {
-    let body = {
+  const handleOnSearchButton = () => {
+    const priceValue = price.replace(/[^0-9]/g, '');
+    const body = {
       cuisineType: searchInput,
-      price: Number(price.split('R$')[1]),
+      price: Number(priceValue) || 50,
       ...state,
       rating: Number(ratingChange),
     };
 
-    let header = {
+    const header = {
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      method: "post", body: JSON.stringify(body)
-    }
+      method: "post",
+      body: JSON.stringify(body),
+    };
 
     fetch("http://localhost:3000", header)
       .then((response) => response.json())
       .then((data) => {
         handleClose();
-        alternText("Resultado da busca");
-        setHiddenAbout(true);
-        const topSimilarsRestaurants = data.slice(0, 3)
-        const displayedRestaurants = document.querySelectorAll('[data-id]')
-        displayedRestaurants.forEach(restaurant => {
-            const similaritiesIds = topSimilarsRestaurants.map(similar => similar._id)
-          if (!similaritiesIds.includes(restaurant.getAttribute('data-id'))) {
-            restaurant.style['display'] = 'none';
-          }
-        })
+        alternText("Search Results");
+        const topSimilarsRestaurants = data.slice(0, 6);
+        if (onSearchResults) {
+          onSearchResults(topSimilarsRestaurants);
+        }
       })
+      .catch((error) => {
+        console.error('Search error:', error);
+      });
   };
 
   return (
     <div>
-      <Button onClick={handleClickOpen}
-        className={hasToBeWhite ? styles.buttonColorWhite : styles.buttonColorRed}
-        color={"primary"}>
-        PREENCHER FORMULÁRIO DE BUSCA
+      <Button
+        onClick={handleClickOpen}
+        className={hasToBeWhite ? styles.buttonWhite : styles.buttonDark}
+        disableElevation
+      >
+        Find Now
+        <FiArrowRight className={styles.arrowIcon} />
       </Button>
 
-      <Dialog open={open}>
-        <DialogTitle>Preencha sua preferência</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Para fornecer uma recomendação com maior precisão preencha o formulário abaixo.
+      <Dialog open={open} onClose={handleClose} className={styles.dialog}>
+        <DialogTitle className={styles.dialogTitle}>
+          Find Your Restaurant
+        </DialogTitle>
+        <DialogContent className={styles.dialogContent}>
+          <DialogContentText className={styles.dialogDescription}>
+            Tell us your preferences and our AI will recommend the best dining matches for you.
           </DialogContentText>
-        </DialogContent>
 
-        <DialogContent className={styles.dialog}>
-          <Paper className={styles.paper} variant={"outlined"}>
-            <List>
-              <SearchInputField options={options} searchInputSave={HandleSearchInputSave} />
-
+          <Box className={styles.formContainer}>
+            <ThemeProvider theme={theme}>
+              <SearchInputField options={options} searchInputSave={handleSearchInputSave} />
               <PriceTextField handlePrice={handlePrice} />
-
               <RatingField handleRatingChange={handleRatingChange} />
-
               <ThematicCheckBox handleChange={handleChange} />
-
               <RestrictionAlimentCheckBox handleChange={handleChange} />
-
-            </List>
-          </Paper>
+            </ThemeProvider>
+          </Box>
         </DialogContent>
 
-        <DialogActions>
-          <ThemeProvider theme={theme}>
-            <Button onClick={handleClose} color="secondary">
-              Cancel
-            </Button>
-            <Button onClick={HandleOnSearchButton} color="secondary">
-              Buscar
-            </Button>
-          </ThemeProvider>
+        <DialogActions className={styles.dialogActions}>
+          <Button onClick={handleClose} className={styles.cancelButton}>
+            Cancel
+          </Button>
+          <Button onClick={handleOnSearchButton} className={styles.searchButton}>
+            Search Restaurants
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
 export default DialogForm;
