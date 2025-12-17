@@ -24,9 +24,9 @@ services:
   mongodb:
       image: mongo:6.0
       environment:
-        - MONGO_INITDB_DATABASE=prod
-        - MONGO_INITDB_ROOT_USERNAME=prod
-        - MONGO_INITDB_ROOT_PASSWORD=prod
+        - MONGO_INITDB_DATABASE=${MONGO_DB_DATABASE:-prod}
+        - MONGO_INITDB_ROOT_USERNAME=${MONGO_DB_USERNAME:-admin}
+        - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DB_PASSWORD:?MONGO_DB_PASSWORD is required}
       volumes:
         - ./mongo-initdb:/docker-entrypoint-initdb.d:z
       ports:
@@ -36,9 +36,9 @@ services:
     build: ../../express-app
     command: yarn run nodemon
     environment:
-      - MONGO_DB_DATABASE=prod
-      - MONGO_DB_USERNAME=prod
-      - MONGO_DB_PASSWORD=prod
+      - MONGO_DB_DATABASE=${MONGO_DB_DATABASE:-prod}
+      - MONGO_DB_USERNAME=${MONGO_DB_USERNAME:-admin}
+      - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD:?MONGO_DB_PASSWORD is required}
     expose:
       - 3000
     ports:

@@ -2,6 +2,8 @@
 
 A restaurant recommendation system that implements **Case-Based Reasoning (CBR)**, an artificial intelligence technique that solves new problems by retrieving and adapting solutions from similar past experiences stored in a case base.
 
+![Application Screenshot](assets/sample-01.png)
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -210,21 +212,29 @@ The easiest way to run the complete application stack (MongoDB, Express API, Rea
 
 **Development Environment:**
 ```bash
-# Start all services
+# 1. Copy and configure environment variables
+cd script/dev
+cp .env.sample .env
+# Edit .env and set MONGO_DB_PASSWORD
+
+# 2. Start all services
 ./run-dev.sh
 
 # Or manually with docker-compose
-cd script/dev
 docker-compose up --build
 ```
 
 **Production Environment:**
 ```bash
-# Start all services in production mode
+# 1. Copy and configure environment variables
+cd script/prod
+cp .env.sample .env
+# Edit .env and set secure MONGO_DB_PASSWORD
+
+# 2. Start all services in production mode
 ./run-prod.sh
 
 # Or manually with docker-compose
-cd script/prod
 docker-compose up --build -d
 ```
 
